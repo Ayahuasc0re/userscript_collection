@@ -12,6 +12,7 @@
 
 (function() {
     'use strict';
+    
     var iframes = document.querySelectorAll('iframe');
     for (var i = 0; i < iframes.length; i++) {
         if (iframes[i].id != "allmyplayer") {
