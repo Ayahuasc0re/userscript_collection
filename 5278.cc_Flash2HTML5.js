@@ -68,12 +68,14 @@ function callBack() {
     }
 }
 
+/*
 function downloadURI(uri, name) {
     var link = document.createElement("a");
     link.download = name;
     link.href = uri;
     link.click();
 }
+**/
 
 function createDownloadButton(vidURL) {
     // document.querySelector("#mediaplayer_jwplayer_controlbar_durationText").onclick = function () { downloadURI(vidURL, vidURL.match(/[\d\w]+\.mp4/g)); };
