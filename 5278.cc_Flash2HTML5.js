@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         5278.cc Flash to HTML5 - AJAX Version
-// @version      0.1.0
+// @version      0.1.1
 // @description  Converts Flash to HTML5 and makes a download possible. No Flash required!
 // @author       Ayahuasc0re
 // @updateURL	 https://raw.githubusercontent.com/ayahuasc0re/userscript_collection/master/5278.cc_Flash2HTML5.js
@@ -8,7 +8,7 @@
 // @match        http://new.qqqbox.com/*/player3.php?id=*
 // @match        http://hbo.hboav.com/*/player3.php?id=*
 // @grant        none
-// @run-at       document-end
+// @run-at       document-idle
 // ==/UserScript==
 
 var xhr = new XMLHttpRequest();
