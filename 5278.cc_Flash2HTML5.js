@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         5278.cc Flash to HTML5 - AJAX Version
-// @version      0.1.1
+// @version      0.1.2
 // @description  Converts Flash to HTML5 and makes a download possible. No Flash required!
 // @author       Ayahuasc0re
 // @updateURL	 https://raw.githubusercontent.com/ayahuasc0re/userscript_collection/master/5278.cc_Flash2HTML5.js
@@ -10,6 +10,10 @@
 // @grant        none
 // @run-at       document-idle
 // ==/UserScript==
+
+// Prep for Local Storage / CSV Settings/State
+var referrer = document.referrer;
+console.log("Referrer: " + referrer);
 
 var xhr = new XMLHttpRequest();
 var safetyCount = 0;
