@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         5278.cc Flash to HTML5 - AJAX Version
-// @version      0.2.0
+// @version      0.2.1
 // @description  Converts Flash to HTML5 and makes a download possible. No Flash required!
 // @author       Ayahuasc0re
 // @updateURL	 https://raw.githubusercontent.com/ayahuasc0re/userscript_collection/master/5278.cc_Flash2HTML5.js
@@ -77,12 +77,12 @@ function callBack() {
                 // Check if filename length is 5
                 if (vidURL.match(/[\d\w]{5}\.mp4/g)) {
                     console.log("vidURL: " + vidURL);
+		    createDownloadButton(vidURL);
                 } else {
                     console.log("vidURL: " + vidURL);
                     console.log("Decryption probably incorrect. Site will reload!");
                     location.reload();
                 }
-                if (vidURL.match(/[\d\w]+\.mp4/g)) createDownloadButton(vidURL);
             }
         } else {
             console.error(xhr.statusText);
