@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         5278.cc Flash to HTML5 - AJAX Version
-// @version      0.2.2
+// @version      0.2.3
 // @description  Converts Flash to HTML5 and makes a download possible. No Flash required!
 // @author       Ayahuasc0re
 // @updateURL	 https://raw.githubusercontent.com/ayahuasc0re/userscript_collection/master/5278.cc_Flash2HTML5.js
@@ -27,6 +27,8 @@ function httpRequest(queryURL) {
     };
     xhr.onerror = function (e) {
         console.error(xhr.statusText);
+	console.error("Error in httpRequest Function. Site will reload!");
+	location.reload();
     };
     xhr.send(null);
 }
@@ -48,7 +50,7 @@ function initiateQuery() {
     }
     catch(e) {
     	console.error(e);
-        console.log("Error in initiateQuery Function. Site will reload!");
+        console.error("Error in initiateQuery Function. Site will reload!");
     	location.reload();
     }
 }
@@ -67,7 +69,7 @@ function callBack() {
                 var flashvars = unescape(myencryptHTML(cssJsCmdsX));
                 console.log("flashvars: " + flashvars);
                 if (flashvars.match("Z Z Z Z Z Z Z Z Z Z Z Z Z Z Z Z")) {
-                    console.log('"Z Z Z" Bug. Site will reload!');
+                    console.error('"Z Z Z" Bug. Site will reload!');
                     location.reload();
                 }
                 var vidRegex = /file\:\s"(.+)"/g;
@@ -80,7 +82,7 @@ function callBack() {
 		    createDownloadButton(vidURL);
                 } else {
                     console.log("vidURL: " + vidURL);
-                    console.log("Decryption probably incorrect. Site will reload!");
+                    console.error("Decryption probably incorrect. Site will reload!");
                     location.reload();
                 }
             }
