@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         5278.cc Flash to HTML5 - AJAX Version
-// @version      0.1.2
+// @version      0.2.0
 // @description  Converts Flash to HTML5 and makes a download possible. No Flash required!
 // @author       Ayahuasc0re
 // @updateURL	 https://raw.githubusercontent.com/ayahuasc0re/userscript_collection/master/5278.cc_Flash2HTML5.js
@@ -8,7 +8,7 @@
 // @match        http://new.qqqbox.com/*/player3.php?id=*
 // @match        http://hbo.hboav.com/*/player3.php?id=*
 // @grant        none
-// @run-at       document-idle
+// @run-at       document-end
 // ==/UserScript==
 
 // Prep for Local Storage / CSV Settings/State
@@ -33,16 +33,23 @@ function httpRequest(queryURL) {
 
 function initiateQuery() {
     safetyCount++;
-    var queryURL = document.body.innerHTML.match(/get3\.php\?rand\=.+\&ref\=/g)[0] + document.location.hostname;
-    if (queryURL) {
-        observer.disconnect();
-        console.log("queryURL: " + queryURL);
-        httpRequest(queryURL);
+    try {
+    	var queryURL = document.body.innerHTML.match(/get3\.php\?rand\=.+\&ref\=/g)[0] + document.location.hostname;
+    	if (queryURL) {
+        	observer.disconnect();
+        	console.log("queryURL: " + queryURL);
+        	httpRequest(queryURL);
+    	}
+    	if (safetyCount >= 20) {
+        	observer.disconnect();
+        	console.log("OBSERVER REMOVED AFTER safetyCount: " + safetyCount);
+        	return false;
+    	}
     }
-    if (safetyCount >= 20) {
-        observer.disconnect();
-        console.log("OBSERVER REMOVED AFTER safetyCount: " + safetyCount);
-        return false;
+    catch(e) {
+    	console.error(e);
+        console.log("Error in initiateQuery Function. Site will reload!");
+    	location.reload();
     }
 }
 
@@ -52,17 +59,29 @@ function callBack() {
         if (xhr.status === 200) {
             var response = xhr.responseText;
             if (response) {
-                console.log("response: " + response);
+                // console.log("response: " + response);
                 var cmdRegex = /var\sccsJsCmds\s\=\s'(.+)';/g;
                 var cssJsCmdsX = cmdRegex.exec(response)[1];
                 console.log("cssJsCmdsX: " + cssJsCmdsX);
+                console.log("myencryptHTML: " + myencryptHTML.toString());
                 var flashvars = unescape(myencryptHTML(cssJsCmdsX));
                 console.log("flashvars: " + flashvars);
+                if (flashvars.match("Z Z Z Z Z Z Z Z Z Z Z Z Z Z Z Z")) {
+                    console.log('"Z Z Z" Bug. Site will reload!');
+                    location.reload();
+                }
                 var vidRegex = /file\:\s"(.+)"/g;
                 var vidURL = vidRegex.exec(flashvars)[1];
                 if (vidURL.charAt(0) === "/") vidURL = "http://" + document.location.hostname + vidURL;
                 if (vidURL.match(/[\d\w]+\.flv/g)) vidURL = vidURL.replace(/\.flv/g, ".mp4");
-                console.log("vidURL: " + vidURL);
+                // Check if filename length is 5
+                if (vidURL.match(/[\d\w]{5}\.mp4/g)) {
+                    console.log("vidURL: " + vidURL);
+                } else {
+                    console.log("vidURL: " + vidURL);
+                    console.log("Decryption probably incorrect. Site will reload!");
+                    location.reload();
+                }
                 if (vidURL.match(/[\d\w]+\.mp4/g)) createDownloadButton(vidURL);
             }
         } else {
@@ -88,6 +107,8 @@ function createDownloadButton(vidURL) {
 
 /*
 // decrypt5278 = offline mirror of myencryptHTML function
+// String.fromCharCode(n - X) - X varies from request to request!!!
+// old function / not currently in use
 function decrypt5278(s) {
 	var sRet="";
 	for(j=0; j< s.length; j++ ) {
@@ -99,5 +120,13 @@ function decrypt5278(s) {
 	}
 	return(sRet);
 }
+// new function!
+function decrypt5278(s) {
+	var sRet = "";
+	for (j = 0; j < s.length; j++) {
+		var n = s.charCodeAt(j); {}
+		sRet += String.fromCharCode(n - 4);
+	}
+	return (sRet);
+}
 **/
-
