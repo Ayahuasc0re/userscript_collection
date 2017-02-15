@@ -14,8 +14,6 @@
     var response;
     var movietitle;
     var IMDbID;
-    //var IMDbRating;
-    //var IMDbVotes;
     var queryURL;
     var boxContent;
     try {
