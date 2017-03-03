@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name         feemoo.com - Direct Download
-// @version      0.2.0
+// @version      0.2.1
 // @description  Makes a download possible without the need for an account
 // @author       Ayahuasc0re
-// @updateURL	 https://raw.githubusercontent.com/ayahuasc0re/userscript_collection/master/feemoo.com_directDownload.js
+// @updateURL    https://raw.githubusercontent.com/ayahuasc0re/userscript_collection/master/feemoo.com_directDownload.js
 // @downloadURL  https://raw.githubusercontent.com/ayahuasc0re/userscript_collection/master/feemoo.com_directDownload.js
 // @match        https://www.feemoo.com/file-*.html
 // @match        https://feemoo.com/file-*.html
@@ -43,9 +43,9 @@ function firstCallBack() {
                 console.log("response:\n" + response);
                 var regex = /href="(fmdown\.php\?.+?)"/g;
                 var secondRequestURL = "https://" + document.location.host + "/" + regex.exec(response)[1];
-				console.log("secondRequestURL:\n" + secondRequestURL);
-				xhr = createXHR();
-				httpRequestGet(secondRequestURL, secondCallBack);
+                console.log("secondRequestURL:\n" + secondRequestURL);
+                xhr = createXHR();
+                httpRequestGet(secondRequestURL, secondCallBack);
             }
         } else {
             console.error(xhr.statusText);
@@ -65,8 +65,8 @@ function secondCallBack() {
                 var regexName = /<title>(.+)<\/title>/g;
                 var downloadURL = regexURL.exec(response)[1];
                 var fileName = regexName.exec(response)[1];
-				console.log("downloadURL:\n" + downloadURL);
-				createDownloadButton(downloadURL, fileName);
+                console.log("downloadURL:\n" + downloadURL);
+                createDownloadButton(downloadURL, fileName);
 
             }
         } else {
@@ -81,7 +81,7 @@ function createDownloadButton(downloadURL, fileName) {
         document.body.innerHTML = '<a id="download_file" " title="Download" href="' + downloadURL + '"><i>DOWNLOAD:</br>' + fileName + '</i></a>';
     }
     catch(e) {
-        document.body.onload(document.body.innerHTML = '<a id="download_file" " title="Download" href="' + downloadURL + '"><i>DOWNLOAD:</br>' + fileName + '</i></a>');
+        windwow.onload(document.body.innerHTML = '<a id="download_file" " title="Download" href="' + downloadURL + '"><i>DOWNLOAD:</br>' + fileName + '</i></a>');
     }
 }
 
