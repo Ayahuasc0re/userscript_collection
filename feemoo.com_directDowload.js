@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         feemoo.com - Direct Download
-// @version      0.1.0
+// @version      0.2.0
 // @description  Makes a download possible without the need for an account
 // @author       Ayahuasc0re
 // @updateURL	 https://raw.githubusercontent.com/ayahuasc0re/userscript_collection/master/feemoo.com_directDownload.js
@@ -35,15 +35,15 @@ function httpRequestGet(queryURL, callBackFunction) {
 }
 
 function firstCallBack() {
-    console.log("First Callback!");
+    // console.log("First Callback!");
     if (xhr.readyState === 4) {
         if (xhr.status === 200) {
             var response = xhr.responseText;
             if (response) {
-                console.log("response: " + response);
+                console.log("response:\n" + response);
                 var regex = /href="(fmdown\.php\?.+?)"/g;
                 var secondRequestURL = "https://" + document.location.host + "/" + regex.exec(response)[1];
-				console.log("secondRequestURL: " + secondRequestURL);
+				console.log("secondRequestURL:\n" + secondRequestURL);
 				xhr = createXHR();
 				httpRequestGet(secondRequestURL, secondCallBack);
             }
@@ -55,16 +55,18 @@ function firstCallBack() {
 }
 
 function secondCallBack() {
-    console.log("Second Callback!");
+    // console.log("Second Callback!");
     if (xhr.readyState === 4) {
         if (xhr.status === 200) {
             var response = xhr.responseText;
             if (response) {
-                // console.log("response: " + response);
-                var regex = /var\sfile_url=\s'(.+)'/g;
-                var downloadURL = regex.exec(response)[1];
-				console.log("downloadURL: " + downloadURL);
-				createDownloadButton(downloadURL);
+                // console.log("Final Website:\n" + response);
+                var regexURL = /var\sfile_url=\s'(.+)'/g;
+                var regexName = /<title>(.+)<\/title>/g;
+                var downloadURL = regexURL.exec(response)[1];
+                var fileName = regexName.exec(response)[1];
+				console.log("downloadURL:\n" + downloadURL);
+				createDownloadButton(downloadURL, fileName);
 
             }
         } else {
@@ -74,9 +76,13 @@ function secondCallBack() {
     }
 }
 
-function createDownloadButton(urlx) {
-    // document.querySelector("#mediaplayer_jwplayer_controlbar_durationText").onclick = function () { downloadURI(vidURL, vidURL.match(/[\d\w]+\.mp4/g)); };
-    document.body.innerHTML = '<a id="download_file" " title="Download" href="' + urlx + '"><i>DOWNLOAD</i></a>';
+function createDownloadButton(downloadURL, fileName) {
+    try {
+        document.body.innerHTML = '<a id="download_file" " title="Download" href="' + downloadURL + '"><i>DOWNLOAD:</br>' + fileName + '</i></a>';
+    }
+    catch(e) {
+        document.body.onload(document.body.innerHTML = '<a id="download_file" " title="Download" href="' + downloadURL + '"><i>DOWNLOAD:</br>' + fileName + '</i></a>');
+    }
 }
 
 function initFunction() {
@@ -97,7 +103,7 @@ function createXHR() {
     }
 }
 
-console.log("START");
+// console.log("START");
 var xhr = createXHR();
 initFunction();
 
