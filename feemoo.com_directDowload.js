@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         feemoo.com - Direct Download
-// @version      0.2.1
+// @version      0.2.2
 // @description  Makes a download possible without the need for an account
 // @author       Ayahuasc0re
 // @updateURL    https://raw.githubusercontent.com/ayahuasc0re/userscript_collection/master/feemoo.com_directDownload.js
@@ -62,7 +62,7 @@ function secondCallBack() {
             if (response) {
                 // console.log("Final Website:\n" + response);
                 var regexURL = /var\sfile_url=\s'(.+)'/g;
-                var regexName = /<title>(.+)<\/title>/g;
+                var regexName = /<title>(.+)\s-\s下载页面\s-\s飞猫网盘<\/title>/g;
                 var downloadURL = regexURL.exec(response)[1];
                 var fileName = regexName.exec(response)[1];
                 console.log("downloadURL:\n" + downloadURL);
@@ -78,15 +78,15 @@ function secondCallBack() {
 
 function createDownloadButton(downloadURL, fileName) {
     try {
-        document.body.innerHTML = '<a id="download_file" " title="Download" href="' + downloadURL + '"><i>DOWNLOAD:</br>' + fileName + '</i></a>';
+        document.body.innerHTML = '<a id="download_file" " title="Download" href="' + downloadURL + '"><i>DOWNLOAD:</br>' + fileID + ' - ' + fileName + '</i></a>';
     }
     catch(e) {
-        windwow.onload(document.body.innerHTML = '<a id="download_file" " title="Download" href="' + downloadURL + '"><i>DOWNLOAD:</br>' + fileName + '</i></a>');
+        windwow.onload(document.body.innerHTML = '<a id="download_file" " title="Download" href="' + downloadURL + '"><i>DOWNLOAD:</br>' + fileID + ' - ' + fileName + '</i></a>');
     }
 }
 
 function initFunction() {
-    var fileID = document.location.pathname.match(/\d{6}/g)[0];
+    fileID = document.location.pathname.match(/\d{6}/g)[0];
     console.log("fileID: " + fileID);
     httpRequestPost("https://" + document.location.host + "/yythems_ajax_file.php", "action=load_down_addr2&file_id=" + fileID, firstCallBack);
 }
@@ -104,6 +104,7 @@ function createXHR() {
 }
 
 // console.log("START");
+var fileID;
 var xhr = createXHR();
 initFunction();
 
