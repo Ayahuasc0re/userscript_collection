@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         feemoo.com - Direct Download
-// @version      0.2.2
+// @version      0.2.3
 // @description  Makes a download possible without the need for an account
 // @author       Ayahuasc0re
 // @updateURL    https://raw.githubusercontent.com/ayahuasc0re/userscript_collection/master/feemoo.com_directDownload.js
@@ -88,7 +88,7 @@ function createDownloadButton(downloadURL, fileName) {
 function initFunction() {
     fileID = document.location.pathname.match(/\d{6}/g)[0];
     console.log("fileID: " + fileID);
-    httpRequestPost("https://" + document.location.host + "/yythems_ajax_file.php", "action=load_down_addr2&file_id=" + fileID, firstCallBack);
+    httpRequestPost(document.location.protocol + "//" + document.location.host + "/yythems_ajax_file.php", "action=load_down_addr2&file_id=" + fileID, firstCallBack);
 }
 
 function createXHR() {
