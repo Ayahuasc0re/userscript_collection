@@ -1,12 +1,11 @@
 // ==UserScript==
 // @name         feemoo.com - Direct Download
-// @version      0.2.3
+// @version      0.2.4
 // @description  Makes a download possible without the need for an account
 // @author       Ayahuasc0re
 // @updateURL    https://raw.githubusercontent.com/ayahuasc0re/userscript_collection/master/feemoo.com_directDownload.js
 // @downloadURL  https://raw.githubusercontent.com/ayahuasc0re/userscript_collection/master/feemoo.com_directDownload.js
-// @match        https://www.feemoo.com/file-*.html
-// @match        https://feemoo.com/file-*.html
+// @include      /https?:\/\/(www\.)?feemoo\.com\/file-\d+\.html/
 // @grant        none
 // @run-at       document-start
 // ==/UserScript==
@@ -42,7 +41,7 @@ function firstCallBack() {
             if (response) {
                 console.log("response:\n" + response);
                 var regex = /href="(fmdown\.php\?.+?)"/g;
-                var secondRequestURL = "https://" + document.location.host + "/" + regex.exec(response)[1];
+                var secondRequestURL = document.location.protocol + "//" + document.location.host + "/" + regex.exec(response)[1];
                 console.log("secondRequestURL:\n" + secondRequestURL);
                 xhr = createXHR();
                 httpRequestGet(secondRequestURL, secondCallBack);
